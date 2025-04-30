@@ -6,7 +6,7 @@ class SubscriptionsController < ApplicationController
 
   def show
     subscription = Subscription.find(params[:id])
-    render json: SubscriptionSerializer.new(subscription, include: [:teas, :customers]).serializable_hash.to_json
+    render json: SubscriptionSerializer.new(subscription).serializable_hash.to_json
   end
 
   def update
