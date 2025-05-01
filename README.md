@@ -13,6 +13,10 @@ Rig Freyr - GitHub: https://github.com/ontruster74
 - **Backend (Rails API)**: Handles subscriptions, customers, and teas, and serves the data via API endpoints.
 - **Frontend (React)**: Consumes the API and displays subscription data to users with options for filtering, viewing details, and toggling subscription status.
 
+Backend Wireframe Structure:
+
+![BackendWireframe](https://github.com/user-attachments/assets/06ccc925-7587-4ab4-a6b2-c37e2ccb5e91)
+
 ---
 
 ## Getting Started
