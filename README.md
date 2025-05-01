@@ -1,60 +1,110 @@
-# Things we'll be looking for:
+# Tea Subscription Admin Portal
 
-- A strong understanding of Rails, React and best practices
-- BE: Ability to create restful routes
-- BE: Demonstration of well-organized code, following OOP
-- BE: Test Driven Development
-- FE: An understanding of basic usability practices and standards
-- FE: A clear hierarchy of information
-- Clear documentation
-- Your ability to prioritize for MVP
-- Clean, well factored code
+This project consists of two parts: a **Rails API** backend and a **React** frontend. It is designed to manage subscriptions, associated customers, and teas.
 
-Try to limit your total time to approximately 8-10 hours each side of the stack. We recommend starting with the BE, and then moving onto the FE, but you are welcome to design your own workflow. Prioritize what is important to completing MVP and demonstrating your capabilities as a developer.
+---
 
+## Project Structure
 
-## Tea Subscription Service
+- **Backend (Rails API)**: Handles subscriptions, customers, and teas, and serves the data via API endpoints.
+- **Frontend (React)**: Consumes the API and displays subscription data to users with options for filtering, viewing details, and toggling subscription status.
 
-You will create a full stack application for a Tea Subscription Service, including a Rails API and a React front end. You do **NOT** need to deploy this app. 
+---
 
-#### Requirements:
+## Getting Started
 
-At a minimum, you must create:
+### Backend (Rails API)
 
-* An endpoint to get all tea subscriptions
-* An endpoint to get info about one subscription, including the tea(s) involved and what customer(s) is subscribed or has been in the past (if cancelled)
-* An endpoint to cancel a specific subscription
+1. **Clone the repository**:
 
-Beyond the base requirements, include any additional endpoints you'd like, but be mindful of your time. You don't need to go overboard, consider what might be necessary to achieve MVP so that this API is easy to understand and consume by a Frontend Developer.
+   ```bash
+   git clone <your-repository-url>
+   cd <your-project-folder>/backend
+   ```
 
- _If you are looking for a stretch option, you can consume this API for tea product information: [Spoontacular API](https://spoonacular.com/food-api/docs)_
+2. **Install dependencies**:
 
-### Data Details
+   ```bash
+   bundle install
+   ```
 
-Note: The below data outlines are meant to be a guide for data details you may use in the application. If you want to change or include more information please do so. The data below does not need to be a direct mapping to your database schema (i.e. there might be more tables involved). 
-Keep in mind there are many ways to implement this at a database level. Just be sure to choose an option that makes sense to you and reflects how you are assuming the tea subscription service functioning. You can make business assumptions. Using fake data in your application is okay.
+3. **Set up the database**:
 
-```
-**Tea**
+   ```bash
+   rails db:create
+   rails db:migrate
+   rails db:seed 
+   ```
 
-- Title
-- Description
-- Temperature
-- Brew Time
+4. **Start the Rails server**:
 
-**Customer**
+   ```bash
+   rails server
+   ```
 
-- First Name
-- Last Name
-- Email
-- Address
+   The backend should now be running at `http://localhost:3000`.
 
-**Subscription**
+---
 
-- Title
-- Price
-- Status
-- Frequency
-```
+### Frontend (React)
 
------
+1. **Navigate to the frontend directory**:
+
+   ```bash
+   cd <your-project-folder>/frontend
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Start the React development server**:
+
+   ```bash
+   npm start
+   ```
+
+   The frontend should now be running at `http://localhost:5173`.
+
+---
+
+## 🛠 API Endpoints
+
+- **GET /subscriptions**: Fetches all subscriptions.
+- **GET /subscriptions/:id**: Fetches a single subscription by ID.
+- **PATCH /subscriptions/:id**: Updates a subscription's status (active/cancelled).
+
+---
+
+## Development Environment
+
+- **Backend**: Rails API
+- **Frontend**: React with Router for navigation
+- **Database**: PostgreSQL 
+
+---
+
+## Running Tests
+
+### Backend (Rails API)
+
+1. **Run tests**:
+
+   ```bash
+   rspec
+   ```
+
+2. **Check test coverage** with SimpleCov:
+
+   ```bash
+   open coverage/index.html
+   ```
+
+## Future Improvements
+
+- Add user authentication and authorization.
+- Improve styling with a more refined design.
+
+---
