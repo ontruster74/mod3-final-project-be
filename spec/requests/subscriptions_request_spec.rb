@@ -26,15 +26,30 @@ RSpec.describe "Subscriptions API", type: :request do
   end
 
   describe "GET /subscriptions/:id" do
-    let!(:subscription) { create(:subscription) }
-    let(:subscription_id) { subscription.id }
-
     context "happy path: when the subscription matching the id exists" do
+      let!(:customer) { create(:customer) }
+      let!(:subscription) { create(:subscription) }
+      let!(:tea) { create(:tea, subscription: subscription) }
+      let(:subscription_id) { subscription.id }
+
+      before do
+        create(:customer_subscription, customer: customer, subscription: subscription)
+      end
+
       it "returns the subscription" do
         get "/subscriptions/#{subscription_id}"
 
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)["data"]["id"]).to eq(subscription_id.to_s)
+        json = JSON.parse(response.body)
+
+        expect(json["data"]["id"]).to eq(subscription_id.to_s)
+        expect(json["data"]["type"]).to eq("subscription")
+        expect(json["data"]["attributes"]["title"]).to eq(subscription.title)
+        expect(json["data"]["attributes"]["status"]).to eq(subscription.status)
+        expect(json["data"]["attributes"]["price"]).to eq(subscription.price.to_s)
+        expect(json["data"]["attributes"]["frequency"]).to eq(subscription.frequency)
+        expect(json["data"]["attributes"]["customers"][0]["id"]).to eq(customer.id)
+        expect(json["data"]["attributes"]["teas"][0]["id"]).to eq(tea.id)
       end
     end
 
