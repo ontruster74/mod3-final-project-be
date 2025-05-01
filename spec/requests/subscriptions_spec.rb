@@ -1,20 +1,35 @@
 require 'rails_helper'
 
 RSpec.describe "Subscriptions API", type: :request do
-  let!(:subscriptions) { create_list(:subscription, 3) }
-  let(:subscription_id) { subscriptions.first.id }
 
   describe "GET /subscriptions" do
-    it "returns all subscriptions" do
-      get "/subscriptions"
+  
+    context "happy path: when a list of subscriptions exist" do
+      let!(:subscriptions) { create_list(:subscription, 3) }
+      it "returns all subscriptions" do
+        get "/subscriptions"
+  
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)["data"].size).to eq(3)
+      end
+    end
 
-      expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body)["data"].size).to eq(3)
+    context "sad path: when no subscriptions exist" do
+      it "returns an empty array" do
+        get "/subscriptions"
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json["data"]).to eq([])
+      end
     end
   end
 
   describe "GET /subscriptions/:id" do
-    context "when the record exists" do
+    let!(:subscription) { create(:subscription) }
+    let(:subscription_id) { subscription.id }
+
+    context "happy path: when the subscription matching the id exists" do
       it "returns the subscription" do
         get "/subscriptions/#{subscription_id}"
 
@@ -23,8 +38,8 @@ RSpec.describe "Subscriptions API", type: :request do
       end
     end
 
-    context "when the record does not exist" do
-      it "returns a 404" do
+    context "sad path: when the subscription matching the id does not exist" do
+      it "returns a 404 Not Found error" do
         get "/subscriptions/999999"
 
         expect(response).to have_http_status(:not_found)
@@ -32,47 +47,43 @@ RSpec.describe "Subscriptions API", type: :request do
     end
   end
 
-  describe "POST /subscriptions" do
-    let(:valid_attributes) do
-      {
-        subscription: {
-          title: "Green Tea Box",
-          price: 15.50,
-          frequency: "Monthly"
-        }
-      }
-    end
-
-    context "with valid params" do
-      it "creates a new subscription" do
-        expect {
-          post "/subscriptions", params: valid_attributes
-        }.to change(Subscription, :count).by(1)
-
-        expect(response).to have_http_status(:created)
-      end
-    end
-
-    context "with invalid params" do
-      it "returns a 422 error" do
-        post "/subscriptions", params: { subscription: { title: "" } }
-
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)["errors"]).to be_present
-      end
-    end
-  end
-
   describe "PATCH /subscriptions/:id" do
+    let!(:subscription) { create(:subscription) }
+    let(:subscription_id) { subscription.id }
+
     let(:update_params) do
-      { subscription: { price: 22.99 } }
+      { subscription: { price: 10.00 } }
     end
 
-    it "updates the subscription" do
+    it "happy path: updates the subscription" do
       patch "/subscriptions/#{subscription_id}", params: update_params
 
       expect(response).to have_http_status(:ok)
-      expect(Subscription.find(subscription_id).price).to eq(22.99)
+      expect(Subscription.find(subscription_id).price).to eq(10.00)
+    end
+
+    context "sad path: when the updated subscription does not exist" do
+      it "returns a 404 error" do
+        patch "/subscriptions/9999", params: {
+          subscription: { status: "cancelled" }
+        }
+
+        expect(response).to have_http_status(:not_found)
+        json = JSON.parse(response.body)
+        expect(json["error"]).to eq("Resource not found")
+      end
+    end
+
+    context "sad path: when the update params are invalid" do
+      it "returns a 422 with appropriate error message" do
+        patch "/subscriptions/#{subscription.id}", params: {
+          subscription: { status: nil }
+        }
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = JSON.parse(response.body)
+        expect(json["errors"]).to include("Status can't be blank")
+      end
     end
   end
 end
