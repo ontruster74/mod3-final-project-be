@@ -1,6 +1,6 @@
 # Tea Subscription Admin Portal
 
-This project consists of two parts: a **Rails API** backend and a **React** frontend. It allow a hypothetical admin user to manage the status of a number of tea box subscriptions, and view each subscription's associated customers and teas.
+This project consists of two parts: a **Rails API** backend and a **React** frontend. It allows a hypothetical admin user to manage the status of a number of tea box subscriptions, and view each subscription's associated customers and teas.
 
 ---
 
