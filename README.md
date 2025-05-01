@@ -66,7 +66,7 @@ Rig Freyr - GitHub: https://github.com/ontruster74
 
 ---
 
-## 🛠 API Endpoints
+## API Endpoints
 
 - **GET /subscriptions**: Fetches all subscriptions.
 - **GET /subscriptions/:id**: Fetches a single subscription by ID.
@@ -102,5 +102,6 @@ Rig Freyr - GitHub: https://github.com/ontruster74
 
 - Add user authentication and authorization.
 - Improve styling with a more refined design.
+- Add more endpoints to complete backend CRUD functionality in case the scope of the application needs to expand.
 
 ---
